@@ -102,7 +102,7 @@ init=/bin/sh
 Now we need to write it at the correct address, which is the address of the bootargs string + the offset of the earlycon part in the bootargs string. In our case, the offset is 16, so we need to write our payload at the address of the bootargs string + 16. We can use the command:
 
 ```
-set {char[25]} (ADDRESS_OF_BOOTARGS_STRING + 16) = init=/bin/sh             
+set {char[25]} (ADDRESS_OF_BOOTARGS_STRING + 16) = "init=/bin/sh             "
 ```
 
 Now we can continue the execution of the machine by typing `c` in gdb, and we should have a root shell on the machine.

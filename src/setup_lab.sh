@@ -22,7 +22,7 @@ setup() {
 
     if [ ! -f ../buildroot/output/images/Image ] || [ ! -f ../buildroot/output/images/rootfs.ext4 ]; then
         echo -e "\n\e[33m[!] WARNING: Buildroot artifacts are missing. Running Buildroot build, please wait...\e[0m"
-        (cd ../buildroot && make -j$(nproc))
+        (cd ../buildroot && make qemu_aarch64_virt_defconfig && make -j$(nproc))
     fi
 
     if [ ! -f ../u-boot/u-boot.bin ]; then
@@ -72,7 +72,6 @@ setup() {
             signature-1 {
                 algo = "sha256,rsa4096";
                 key-name-hint = "dev_key";
-                sign-images = "kernel";
             };
         };
     };
@@ -96,6 +95,9 @@ EOF
 
     echo -e "\n[+] 8. Copying signed FIT Image to SD card..."
     mcopy -i $output/sdcard.img $output/fitImage ::fitImage
+
+    echo -e "\n[+] 6. Building pwned binary..."
+    make POC
 
     echo -e "\e[32m=========================================================="
     echo -e "      LAB READY AND SECURED (SECURE BOOT)!        "
